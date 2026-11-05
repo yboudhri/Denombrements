@@ -9,6 +9,22 @@ namespace Denombrements
     class Program
     {
         /// <summary>
+        /// Calcul du produit de plusieurs entiers successifs, de valeurDepart à valeurArrivee
+        /// </summary>
+        /// <param name="valeurDepart">valeur de départ du calcul</param>
+        /// <param name="valeurArrivee">valeur d'arrivée du calcul</param>
+        /// <returns>résultat du produit ou 0 si dépassement de capacité</returns>
+        static long ProduitEntiers(int valeurDepart, int valeurArrivee)
+        {
+            long produit = 1;
+            for (int k = valeurDepart; k <= valeurArrivee; k++)
+            {
+                produit *= k;
+            }
+            return produit;
+        }
+
+        /// <summary>
         /// Affiche un menu en boucle et lance le calcul choisi
         /// </summary>
         /// <param name="args"></param>
@@ -36,22 +52,15 @@ namespace Denombrements
                         // choix : permutation
                         if (choix == "1")
                         {
-                            long r = 1;
-                            for (int k = 1; k <= nbTotal; k++)
-                            {
-                                r *= k;
-                            }
-                            Console.WriteLine(nbTotal + "! = " + r);
+                            long permutation = ProduitEntiers(1, nbTotal);
+                            Console.WriteLine(nbTotal + "! = " + permutation);
                         }
                         else
                         {
                             Console.Write("nombre d'éléments dans le sous ensemble = ");
                             int nbSousEnsemble = int.Parse(Console.ReadLine());
-                            long arrangement = 1;
-                            for (int k = (nbTotal - nbSousEnsemble + 1); k <= nbTotal; k++)
-                            {
-                                arrangement *= k;
-                            }
+                            // calcul de l'arrangement qui sert aussi au calcul de la combinaison
+                            long arrangement = ProduitEntiers(nbTotal - nbSousEnsemble + 1, nbTotal);
                             // choix : arrangement
                             if (choix == "2")
                             {
@@ -60,12 +69,8 @@ namespace Denombrements
                             //choix : combinaison
                             else
                             {
-                                long factorielle = 1;
-                                for (int k = 1; k <= nbSousEnsemble; k++)
-                                {
-                                    factorielle *= k;
-                                }
-                                Console.WriteLine("C(" + nbTotal + "/" + nbTotal + ") = " + (arrangement / factorielle));
+                                long combinaison = arrangement / ProduitEntiers(1, nbSousEnsemble);
+                                Console.WriteLine("C(" + nbTotal + "/" + nbTotal + ") = " + combinaison);
                             }
                         }
                     }
